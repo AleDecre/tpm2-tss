@@ -2319,6 +2319,38 @@ TSS2_RC Tss2_Sys_PolicyAuthorizeNV(
     TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
     TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray);
 
+TSS2_RC Tss2_Sys_VIRT_CreateSeed_Prepare(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT parentHandle,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR);
+
+TSS2_RC Tss2_Sys_VIRT_CreateSeed_Complete(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPM2B_PRIVATE *outPrivate,
+    TPM2B_PUBLIC *outPublic,
+    TPM2B_CREATION_DATA *creationData,
+    TPM2B_DIGEST *creationHash,
+    TPMT_TK_CREATION *creationTicket);
+
+TSS2_RC Tss2_Sys_VIRT_CreateSeed(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT parentHandle,
+    TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR,
+    TPM2B_PRIVATE *outPrivate,
+    TPM2B_PUBLIC *outPublic,
+    TPM2B_CREATION_DATA *creationData,
+    TPM2B_DIGEST *creationHash,
+    TPMT_TK_CREATION *creationTicket,
+    TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray
+    );
+
 #ifdef __cplusplus
 }
 #endif

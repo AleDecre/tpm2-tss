@@ -380,6 +380,7 @@
         Esys_Initialize;
         Esys_GetPollHandles;
         Esys_Finalize;
+        Esys_VIRT_CreateSeed;
         Esys_SetCryptoCallbacks;
     local:
         *;

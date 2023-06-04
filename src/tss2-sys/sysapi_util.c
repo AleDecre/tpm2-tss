@@ -180,6 +180,7 @@ static int GetNumHandles(TPM2_CC commandCode, bool req)
         { TPM2_CC_StartAuthSession, 2, 1 },
         { TPM2_CC_PolicyRestart, 1, 0 },
         { TPM2_CC_Create, 1, 0 },
+        { TPM2_CC_VIRT_CreateSeed, 1, 0 },
         { TPM2_CC_Load, 1, 1 },
         { TPM2_CC_LoadExternal, 0, 1 },
         { TPM2_CC_ReadPublic, 1, 0 },

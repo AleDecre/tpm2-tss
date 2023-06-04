@@ -63,7 +63,9 @@
 #define TPM2_PRIVATE_VENDOR_SPECIFIC_BYTES ((TPM2_MAX_RSA_KEY_BYTES / 2) * (3 + 2))
 
 /* Vendor Specific Defines */
+#ifndef DISABLE_VENDOR
 #define TPM2_MAX_PTT_PROPERTIES (TPM2_MAX_CAP_BUFFER / sizeof(UINT32))
+#endif
 
 /* Attached Component Capabilities */
 #define TPM2_MAX_AC_CAPABILITIES (TPM2_MAX_CAP_BUFFER / sizeof(TPMS_AC_OUTPUT))
@@ -251,6 +253,7 @@ typedef UINT32                                TPM2_CC;
 #define TPM2_CC_ACT_SetTimeout                ((TPM2_CC) 0x00000198)
 #define TPM2_CC_LAST                          ((TPM2_CC) 0x00000198)
 #define TPM2_CC_Vendor_TCG_Test               ((TPM2_CC) 0x20000000)
+#define TPM2_CC_VIRT_CreateSeed               ((TPM2_CC) 0x20000001)
 
 /* Definition of Types for Documentation Clarity */
 typedef UINT32 TPM2_ALGORITHM_ID;       /* this is the 1.2 compatible form of the TPM2_ALG_ID */

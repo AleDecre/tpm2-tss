@@ -97,6 +97,7 @@ EXPORTS
     Esys_FieldUpgradeStart_Async
     Esys_FieldUpgradeStart_Finish
     Esys_Finalize
+    Esys_VIRT_CreateSeed
     Esys_FirmwareRead
     Esys_FirmwareRead_Async
     Esys_FirmwareRead_Finish
