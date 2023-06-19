@@ -398,8 +398,8 @@ Fapi_CreateNv_Finish(
             /* Start a authorization session for the NV creation. */
             context->primary_state = PRIMARY_INIT;
             r = ifapi_get_sessions_async(context,
-                                         IFAPI_SESSION_GENEK | IFAPI_SESSION1,
-                                         0, 0);
+                                         IFAPI_SESSION_GEN_SRK | IFAPI_SESSION1,
+                                         TPMA_SESSION_DECRYPT, 0);
             goto_if_error_reset_state(r, "Create sessions", error_cleanup);
             fallthrough;
 

@@ -22,7 +22,7 @@
 #include "fapi_crypto.h"
 #include "fapi_policy.h"
 #include "ifapi_curl.h"
-#include "ifapi_get_intl_cert.h"
+#include "ifapi_get_web_cert.h"
 #include "ifapi_helpers.h"
 #include "tss2_mu.h"
 
@@ -980,7 +980,8 @@ Fapi_Provision_Finish(FAPI_CONTEXT *context)
         statecase(context->state, PROVISION_INIT_SRK);
             /* Create session which will be used for SRK generation. */
             context->srk_handle = context->ek_handle;
-            r = ifapi_get_sessions_async(context, IFAPI_SESSION1, 0, 0);
+            r = ifapi_get_sessions_async(context, IFAPI_SESSION_USE_SRK | IFAPI_SESSION1,
+                                         TPMA_SESSION_DECRYPT, 0);
             goto_if_error_reset_state(r, "Create sessions", error_cleanup);
 
             fallthrough;
@@ -1180,7 +1181,8 @@ Fapi_Provision_Finish(FAPI_CONTEXT *context)
             try_again_or_error_goto(r, "Cleanup", error_cleanup);
 
             /* Create session which will be used for parameter encryption. */
-            r = ifapi_get_sessions_async(context, IFAPI_SESSION1, 0, 0);
+            r = ifapi_get_sessions_async(context, IFAPI_SESSION_USE_SRK | IFAPI_SESSION1,
+                                         TPMA_SESSION_DECRYPT, 0);
             goto_if_error_reset_state(r, "Create sessions", error_cleanup);
 
             fallthrough;
@@ -1566,13 +1568,15 @@ Fapi_Provision_Finish(FAPI_CONTEXT *context)
             return_try_again(r);
             goto_if_error_reset_state(r, "GetCapablity_Finish", error_cleanup);
 
-            if ((*capabilityData)->data.tpmProperties.tpmProperty[0].value == VENDOR_INTC) {
+            if ((*capabilityData)->data.tpmProperties.tpmProperty[0].value == VENDOR_INTC ||
+                (*capabilityData)->data.tpmProperties.tpmProperty[0].value == VENDOR_AMD) {
                 /* Get INTEL certificate for EK public hash via web */
                 uint8_t *cert_buffer = NULL;
                 size_t cert_size;
                 TPM2B_PUBLIC public;
-                r = ifapi_get_intl_ek_certificate(context, &pkey->public, &cert_buffer,
-                                                  &cert_size);
+                r = ifapi_get_web_ek_certificate(context, &pkey->public,
+                                (*capabilityData)->data.tpmProperties.tpmProperty[0].value,
+                                &cert_buffer, &cert_size);
                 goto_if_error_reset_state(r, "Get certificates", error_cleanup);
 
                 r = ifapi_cert_to_pem(cert_buffer, cert_size, &command->pem_cert,
@@ -1580,6 +1584,11 @@ Fapi_Provision_Finish(FAPI_CONTEXT *context)
                 SAFE_FREE(cert_buffer);
                 goto_if_error_reset_state(r, "Convert certificate buffer to PEM.",
                                           error_cleanup);
+
+                 r = ifapi_curl_verify_ek_cert(NULL, NULL, command->pem_cert);
+                 goto_if_error_reset_state(r, "Verify EK certificate.",
+                                           error_cleanup);
+
             } else {
                 /* No certificate was stored in the TPM and ek_cert_less was not set.*/
                 goto_error(r, TSS2_FAPI_RC_NO_CERT,

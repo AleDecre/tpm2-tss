@@ -7,7 +7,7 @@ following sections describe them for the supported platforms.
 
 ## GNU/Linux:
 * GNU Autoconf
-* GNU Autoconf Archive, version >= 2017.03.21
+* GNU Autoconf Archive, version >= 2019.01.06
 * GNU Automake
 * GNU Libtool
 * C compiler
@@ -58,17 +58,29 @@ $ sudo apt -y install \
   libcurl4-openssl-dev \
   uuid-dev \
   libltdl-dev \
-  libusb-1.0-0-dev
+  libusb-1.0-0-dev \
+  libftdi-dev
 ```
 Note: In some Ubuntu versions, the lcov and autoconf-archive packages are incompatible with each other. It is recommended to download autoconf-archive directly from upstream and copy `ax_code_coverage.m4` and `ax_prog_doxygen.m4` to the `m4/` subdirectory of your tpm2-tss directory.
 
 ### Fedora
+
+libtool automake autoconf and autoconf-archive should be installed:
+```
+$ sudo dnf install libtool automake autoconf autoconf-archive
+```
 
 There is a package already, so the package build dependencies information can be
 used to make sure that the needed packages to compile from source are installed:
 
 ```
 $ sudo dnf builddep tpm2-tss
+```
+If you want to install a version from 4.0.0 and the default version of the release
+is lower than this version you have to install libuuid-devel additionally:
+
+```
+$ sudo dnf install libuuid-devel
 ```
 
 ## Windows

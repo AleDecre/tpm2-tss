@@ -1321,7 +1321,7 @@ ifapi_primary_clean(FAPI_CONTEXT *context)
  * @param[in] context The FAPI_CONTEXT storing the used handles.
  * @param[in] session_flags The flags to adjust used session and encryption
  *            key. With IFAPI_SESSION1 and IFAPI_SESSION2 the session creation
- *            for sesion1 and session2 can be activated, IFAPI_SESSION_GENEK
+ *            for sesion1 and session2 can be activated, IFAPI_SESSION_GEN_SRK
  *            triggers the creation of the primary for session secret encryption.
  * @param[in] attribute_flags1 The attributes used for session1.
  * @param[in] attribute_flags2 The attributes used for session2.
@@ -1355,7 +1355,10 @@ ifapi_get_sessions_async(FAPI_CONTEXT *context,
     context->session2_attribute_flags = attribute_flags2;
     char *file = NULL;
 
-    if (!(session_flags & IFAPI_SESSION_GENEK)) {
+    if (session_flags & IFAPI_SESSION_USE_SRK) {
+        context->session_state = SESSION_CREATE_SESSION;
+        return TSS2_RC_SUCCESS;
+    } else if (!(session_flags & IFAPI_SESSION_GEN_SRK)) {
         context->srk_handle = ESYS_TR_NONE;
         context->session_state = SESSION_CREATE_SESSION;
         return TSS2_RC_SUCCESS;
@@ -2135,21 +2138,20 @@ ifapi_authorize_object(FAPI_CONTEXT *context, IFAPI_OBJECT *object, ESYS_TR *ses
         statecase(object->authorization_state, AUTH_INIT)
             LOG_TRACE("**STATE** AUTH_INIT");
 
-            if (!policy_digest_size(object)) {
-                /* No policy used authorization callbacks have to be called if necessary. */
-                if (object_with_auth(object)) {
-                    /* Check whether hierarchy was already authorized. */
-                    if (object->objectType != IFAPI_HIERARCHY_OBJ ||
-                        !object->misc.hierarchy.authorized) {
-                        char *description = NULL;
-                        r = ifapi_get_description(object, &description);
-                        return_if_error(r, "Get description");
+            if (object_with_auth(object)) {
+                /* Check whether hierarchy was already authorized. */
+                if (object->objectType != IFAPI_HIERARCHY_OBJ ||
+                    !object->misc.hierarchy.authorized) {
+                    char *description = NULL;
+                    r = ifapi_get_description(object, &description);
+                    return_if_error(r, "Get description");
 
-                        r = ifapi_set_auth(context, object, description);
-                        SAFE_FREE(description);
-                        return_if_error(r, "Set auth value");
-                    }
+                    r = ifapi_set_auth(context, object, description);
+                    SAFE_FREE(description);
+                    return_if_error(r, "Set auth value");
                 }
+            }
+            if (!policy_digest_size(object)) {
                 /* No policy session needed current fapi session can be used */
                 if (context->session1 && context->session1 != ESYS_TR_NONE)
                     *session = context->session1;
@@ -2158,6 +2160,7 @@ ifapi_authorize_object(FAPI_CONTEXT *context, IFAPI_OBJECT *object, ESYS_TR *ses
                     *session = ESYS_TR_PASSWORD;
                 break;
             }
+
             /* Save current object to be authorized in context. */
             context->current_auth_object = object;
             r = ifapi_policyutil_execute_prepare(context, get_name_alg(context, object),
@@ -2327,7 +2330,7 @@ ifapi_nv_write(
         context->nv_cmd.auth_index = auth_index;
 
         /* Get A session for authorizing the NV write operation. */
-        r = ifapi_get_sessions_async(context, IFAPI_SESSION_GENEK | IFAPI_SESSION1,
+        r = ifapi_get_sessions_async(context, IFAPI_SESSION_GEN_SRK | IFAPI_SESSION1,
                                          TPMA_SESSION_DECRYPT, 0);
         goto_if_error(r, "Create sessions", error_cleanup);
 
@@ -2834,8 +2837,9 @@ ifapi_load_key(
 
         /* Prepare the session creation. */
         r = ifapi_get_sessions_async(context,
-                                     IFAPI_SESSION_GENEK | IFAPI_SESSION1,
-                                     TPMA_SESSION_DECRYPT, 0);
+                                     IFAPI_SESSION_GEN_SRK | IFAPI_SESSION1,
+                                     TPMA_SESSION_DECRYPT | TPMA_SESSION_ENCRYPT,
+                                     0);
         goto_if_error_reset_state(r, "Create sessions", error_cleanup);
         fallthrough;
 
@@ -3492,7 +3496,7 @@ ifapi_key_create(
                    context->policy.hash_size);
         }
         r = ifapi_get_sessions_async(context,
-                                     IFAPI_SESSION_GENEK | IFAPI_SESSION1,
+                                     IFAPI_SESSION_GEN_SRK | IFAPI_SESSION1,
                                      TPMA_SESSION_ENCRYPT | TPMA_SESSION_DECRYPT, 0);
         goto_if_error_reset_state(r, "Create sessions", error_cleanup);
         fallthrough;
@@ -4757,7 +4761,7 @@ ifapi_create_primary(
         }
 
         r = ifapi_get_sessions_async(context,
-                                     IFAPI_SESSION_GENEK | IFAPI_SESSION1,
+                                     IFAPI_SESSION_GEN_SRK | IFAPI_SESSION1,
                                      TPMA_SESSION_ENCRYPT | TPMA_SESSION_DECRYPT, 0);
         goto_if_error_reset_state(r, "Create sessions", error_cleanup);
 
@@ -4845,6 +4849,7 @@ ifapi_create_primary(
 
     statecase(context->cmd.Key_Create.state, KEY_CREATE_PRIMARY_WAIT_FOR_AUTHORIZE2);
         if (template->persistent_handle) {
+            object->misc.key.persistent_handle = template->persistent_handle;
             r = ifapi_authorize_object(context, hierarchy, &auth_session);
             FAPI_SYNC(r, "Authorize hierarchy.", error_cleanup);
 
