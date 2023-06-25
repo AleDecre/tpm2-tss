@@ -2322,6 +2322,7 @@ TSS2_RC Tss2_Sys_PolicyAuthorizeNV(
 TSS2_RC Tss2_Sys_VIRT_CreateSeed_Prepare(
     TSS2_SYS_CONTEXT *sysContext,
     TPMI_DH_OBJECT parentHandle,
+    UINT16 bytesRequested,
     const TPM2B_SENSITIVE_CREATE *inSensitive,
     const TPM2B_PUBLIC *inPublic,
     const TPM2B_DATA *outsideInfo,
@@ -2339,6 +2340,7 @@ TSS2_RC Tss2_Sys_VIRT_CreateSeed(
     TSS2_SYS_CONTEXT *sysContext,
     TPMI_DH_OBJECT parentHandle,
     TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    UINT16 bytesRequested,
     const TPM2B_SENSITIVE_CREATE *inSensitive,
     const TPM2B_PUBLIC *inPublic,
     const TPM2B_DATA *outsideInfo,

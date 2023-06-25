@@ -93,6 +93,7 @@ Esys_VIRT_CreateSeed(
     ESYS_TR shandle1,
     ESYS_TR shandle2,
     ESYS_TR shandle3,
+    UINT16 bytesRequested,
     const TPM2B_SENSITIVE_CREATE *inSensitive,
     const TPM2B_PUBLIC *inPublic,
     const TPM2B_DATA *outsideInfo,
@@ -106,7 +107,7 @@ Esys_VIRT_CreateSeed(
     TSS2_RC r;
 
     r = Esys_VIRT_CreateSeed_Async(esysContext, parentHandle, shandle1, shandle2,
-                          shandle3, inSensitive, inPublic, outsideInfo,
+                          shandle3, bytesRequested, inSensitive, inPublic, outsideInfo,
                           creationPCR);
     return_if_error(r, "Error in async function");
 
@@ -178,15 +179,16 @@ Esys_VIRT_CreateSeed_Async(
     ESYS_TR shandle1,
     ESYS_TR shandle2,
     ESYS_TR shandle3,
+    UINT16 bytesRequested,
     const TPM2B_SENSITIVE_CREATE *inSensitive,
     const TPM2B_PUBLIC *inPublic,
     const TPM2B_DATA *outsideInfo,
     const TPML_PCR_SELECTION *creationPCR)
 {
     TSS2_RC r;
-    LOG_TRACE("context=%p, parentHandle=%"PRIx32 ", inSensitive=%p,"
+    LOG_TRACE("context=%p, parentHandle=%"PRIx32 ", bytesRequested=%04"PRIx16", inSensitive=%p,"
               "inPublic=%p, outsideInfo=%p, creationPCR=%p",
-              esysContext, parentHandle, inSensitive, inPublic, outsideInfo,
+              esysContext, parentHandle, bytesRequested, inSensitive, inPublic, outsideInfo,
               creationPCR);
     TSS2L_SYS_AUTH_COMMAND auths;
     RSRC_NODE_T *parentHandleNode;
@@ -222,6 +224,7 @@ Esys_VIRT_CreateSeed_Async(
     r = Tss2_Sys_VIRT_CreateSeed_Prepare(esysContext->sys,
                                 (parentHandleNode == NULL) ? TPM2_RH_NULL
                                  : parentHandleNode->rsrc.handle,
+                                bytesRequested,
                                 esysContext->in.Create.inSensitive,
                                 inPublic, outsideInfo, creationPCR);
     return_state_if_error(r, _ESYS_STATE_INIT, "SAPI Prepare returned error.");
