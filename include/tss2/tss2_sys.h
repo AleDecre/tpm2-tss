@@ -2353,6 +2353,113 @@ TSS2_RC Tss2_Sys_VIRT_CreateSeed(
     TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray
     );
 
+TSS2_RC Tss2_Sys_VIRT_LoadSeed_Prepare(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT parentHandle,
+    const TPM2B_PRIVATE *inPrivate,
+    const TPM2B_PUBLIC *inPublic
+    );
+
+TSS2_RC Tss2_Sys_VIRT_LoadSeed_Complete(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPM2_HANDLE *objectHandle,
+    TPM2B_NAME *name
+    );
+
+TSS2_RC Tss2_Sys_VIRT_LoadSeed(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT parentHandle,
+    TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    const TPM2B_PRIVATE *inPrivate,
+    const TPM2B_PUBLIC *inPublic,
+    TPM2_HANDLE *objectHandle,
+    TPM2B_NAME *name,
+    TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray
+    );
+
+TSS2_RC Tss2_Sys_VIRT_CreatePrimary_Prepare(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_RH_HIERARCHY primaryHandle,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR);
+
+TSS2_RC Tss2_Sys_VIRT_CreatePrimary_Complete(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPM2_HANDLE *objectHandle,
+    TPM2B_PUBLIC *outPublic,
+    TPM2B_CREATION_DATA *creationData,
+    TPM2B_DIGEST *creationHash,
+    TPMT_TK_CREATION *creationTicket,
+    TPM2B_NAME *name);
+
+TSS2_RC Tss2_Sys_VIRT_CreatePrimary(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_RH_HIERARCHY primaryHandle,
+    TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR,
+    TPM2_HANDLE *objectHandle,
+    TPM2B_PUBLIC *outPublic,
+    TPM2B_CREATION_DATA *creationData,
+    TPM2B_DIGEST *creationHash,
+    TPMT_TK_CREATION *creationTicket,
+    TPM2B_NAME *name,
+    TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray);
+
+TSS2_RC Tss2_Sys_VIRT_StoreState_Prepare(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT keyHandle,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn);
+
+TSS2_RC Tss2_Sys_VIRT_StoreState_Complete(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPM2B_MAX_BUFFER *outData,
+    TPM2B_IV *ivOut);
+
+TSS2_RC Tss2_Sys_VIRT_StoreState(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT keyHandle,
+    TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn,
+    TPM2B_MAX_BUFFER *outData,
+    TPM2B_IV *ivOut,
+    TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray);
+
+TSS2_RC Tss2_Sys_VIRT_RestoreState_Prepare(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT keyHandle,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn);
+
+TSS2_RC Tss2_Sys_VIRT_RestoreState_Complete(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPM2B_MAX_BUFFER *outData,
+    TPM2B_IV *ivOut);
+
+TSS2_RC Tss2_Sys_VIRT_RestoreState(
+    TSS2_SYS_CONTEXT *sysContext,
+    TPMI_DH_OBJECT keyHandle,
+    TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn,
+    TPM2B_MAX_BUFFER *outData,
+    TPM2B_IV *ivOut,
+    TSS2L_SYS_AUTH_RESPONSE *rspAuthsArray);
+
 #ifdef __cplusplus
 }
 #endif

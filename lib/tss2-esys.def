@@ -98,6 +98,10 @@ EXPORTS
     Esys_FieldUpgradeStart_Finish
     Esys_Finalize
     Esys_VIRT_CreateSeed
+    Esys_VIRT_LoadSeed
+    Esys_VIRT_CreatePrimary
+    Esys_VIRT_StoreState
+    Esys_VIRT_RestoreState
     Esys_FirmwareRead
     Esys_FirmwareRead_Async
     Esys_FirmwareRead_Finish

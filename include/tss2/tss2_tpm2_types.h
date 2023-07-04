@@ -254,6 +254,10 @@ typedef UINT32                                TPM2_CC;
 #define TPM2_CC_LAST                          ((TPM2_CC) 0x00000198)
 #define TPM2_CC_Vendor_TCG_Test               ((TPM2_CC) 0x20000000)
 #define TPM2_CC_VIRT_CreateSeed               ((TPM2_CC) 0x20000001)
+#define TPM2_CC_VIRT_LoadSeed                 ((TPM2_CC) 0x20000002)
+#define TPM2_CC_VIRT_CreatePrimary            ((TPM2_CC) 0x20000003)
+#define TPM2_CC_VIRT_StoreState               ((TPM2_CC) 0x20000004)
+#define TPM2_CC_VIRT_RestoreState             ((TPM2_CC) 0x20000005)
 
 /* Definition of Types for Documentation Clarity */
 typedef UINT32 TPM2_ALGORITHM_ID;       /* this is the 1.2 compatible form of the TPM2_ALG_ID */

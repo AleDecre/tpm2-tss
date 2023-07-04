@@ -3825,6 +3825,142 @@ Esys_VIRT_CreateSeed_Finish(
     TPM2B_DIGEST **creationHash,
     TPMT_TK_CREATION **creationTicket);
 
+/* Table 235 - TPM2_VIRT_LoadSeed Command */
+
+TSS2_RC
+Esys_VIRT_LoadSeed(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR parentHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_PRIVATE *inPrivate,
+    const TPM2B_PUBLIC *inPublic,
+    ESYS_TR *objectHandle);
+
+TSS2_RC
+Esys_VIRT_LoadSeed_Async(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR parentHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_PRIVATE *inPrivate,
+    const TPM2B_PUBLIC *inPublic);
+
+TSS2_RC
+Esys_VIRT_LoadSeed_Finish(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR *objectHandle);
+
+/* Table 236 - TPM2_VIRT_CreatePrimary Command */
+
+TSS2_RC
+Esys_VIRT_CreatePrimary(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR primaryHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR,
+    ESYS_TR *objectHandle,
+    TPM2B_PUBLIC **outPublic,
+    TPM2B_CREATION_DATA **creationData,
+    TPM2B_DIGEST **creationHash,
+    TPMT_TK_CREATION **creationTicket);
+
+TSS2_RC
+Esys_VIRT_CreatePrimary_Async(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR primaryHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_SENSITIVE_CREATE *inSensitive,
+    const TPM2B_PUBLIC *inPublic,
+    const TPM2B_DATA *outsideInfo,
+    const TPML_PCR_SELECTION *creationPCR);
+
+TSS2_RC
+Esys_VIRT_CreatePrimary_Finish(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR *objectHandle,
+    TPM2B_PUBLIC **outPublic,
+    TPM2B_CREATION_DATA **creationData,
+    TPM2B_DIGEST **creationHash,
+    TPMT_TK_CREATION **creationTicket);
+
+/* Table 237 - TPM2_VIRT_StoreState Command */
+
+TSS2_RC
+Esys_VIRT_StoreState(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR keyHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn,
+    TPM2B_MAX_BUFFER **outData,
+    TPM2B_IV **ivOut);
+
+TSS2_RC
+Esys_VIRT_StoreState_Async(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR keyHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn);
+
+TSS2_RC
+Esys_VIRT_StoreState_Finish(
+    ESYS_CONTEXT *esysContext,
+    TPM2B_MAX_BUFFER **outData,
+    TPM2B_IV **ivOut);
+
+/* Table 238 - TPM2_VIRT_RestoreState Command */
+
+TSS2_RC
+Esys_VIRT_RestoreState(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR keyHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn,
+    TPM2B_MAX_BUFFER **outData,
+    TPM2B_IV **ivOut);
+
+TSS2_RC
+Esys_VIRT_RestoreState_Async(
+    ESYS_CONTEXT *esysContext,
+    ESYS_TR keyHandle,
+    ESYS_TR shandle1,
+    ESYS_TR shandle2,
+    ESYS_TR shandle3,
+    const TPM2B_MAX_BUFFER *inData,
+    TPMI_YES_NO decrypt,
+    TPMI_ALG_CIPHER_MODE mode,
+    const TPM2B_IV *ivIn);
+
+TSS2_RC
+Esys_VIRT_RestoreState_Finish(
+    ESYS_CONTEXT *esysContext,
+    TPM2B_MAX_BUFFER **outData,
+    TPM2B_IV **ivOut);
+
 /*
  * TPM 2.0 ESAPI Helper Functions
  */

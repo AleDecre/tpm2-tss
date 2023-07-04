@@ -379,6 +379,18 @@
         Tss2_Sys_VIRT_CreateSeed_Prepare;
         Tss2_Sys_VIRT_CreateSeed_Complete;
         Tss2_Sys_VIRT_CreateSeed;
+        Tss2_Sys_VIRT_LoadSeed_Prepare;
+        Tss2_Sys_VIRT_LoadSeed_Complete;
+        Tss2_Sys_VIRT_LoadSeed;
+        Tss2_Sys_VIRT_CreatePrimary_Prepare;
+        Tss2_Sys_VIRT_CreatePrimary_Complete;
+        Tss2_Sys_VIRT_CreatePrimary;
+        Tss2_Sys_VIRT_StoreState_Prepare;
+        Tss2_Sys_VIRT_StoreState_Complete;
+        Tss2_Sys_VIRT_StoreState;
+        Tss2_Sys_VIRT_RestoreState_Prepare;
+        Tss2_Sys_VIRT_RestoreState_Complete;
+        Tss2_Sys_VIRT_RestoreState;
     local:
         *;
 };
