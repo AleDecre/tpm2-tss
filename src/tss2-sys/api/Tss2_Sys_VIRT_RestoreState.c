@@ -16,7 +16,6 @@ TSS2_RC Tss2_Sys_VIRT_RestoreState_Prepare (
     TSS2_SYS_CONTEXT *sysContext,
     TPMI_DH_OBJECT keyHandle,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn)
 {
@@ -50,13 +49,6 @@ TSS2_RC Tss2_Sys_VIRT_RestoreState_Prepare (
                                                  &ctx->nextData);
     }
 
-    if (rval)
-        return rval;
-
-    rval = Tss2_MU_UINT8_Marshal (decrypt,
-                                  ctx->cmdBuffer,
-                                  ctx->maxCmdSize,
-                                  &ctx->nextData);
     if (rval)
         return rval;
 
@@ -123,7 +115,6 @@ TSS2_RC Tss2_Sys_VIRT_RestoreState (
     TPMI_DH_OBJECT keyHandle,
     TSS2L_SYS_AUTH_COMMAND const *cmdAuthsArray,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn,
     TPM2B_MAX_BUFFER *outData,
@@ -136,7 +127,6 @@ TSS2_RC Tss2_Sys_VIRT_RestoreState (
     rval = Tss2_Sys_VIRT_RestoreState_Prepare (sysContext,
                                              keyHandle,
                                              inData,
-                                             decrypt,
                                              mode,
                                              ivIn);
     if (rval)

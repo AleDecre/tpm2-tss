@@ -71,7 +71,6 @@ Esys_VIRT_StoreState(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn,
     TPM2B_MAX_BUFFER **outData,
@@ -80,7 +79,7 @@ Esys_VIRT_StoreState(
     TSS2_RC r;
 
     r = Esys_VIRT_StoreState_Async(esysContext, keyHandle, shandle1, shandle2,
-                                   shandle3, inData, decrypt, mode, ivIn);
+                                   shandle3, inData, mode, ivIn);
     return_if_error(r, "Error in async function");
 
     /* Set the timeout to indefinite for now, since we want _Finish to block */
@@ -150,15 +149,12 @@ Esys_VIRT_StoreState_Async(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn)
 {
     TSS2_RC r;
-    LOG_TRACE("context=%p, keyHandle=%"PRIx32 ", inData=%p,"
-              "decrypt=%02"PRIx8", mode=%04"PRIx16", ivIn=%p",
-              esysContext, keyHandle, inData, decrypt, mode,
-              ivIn);
+    LOG_TRACE("context=%p, keyHandle=%"PRIx32 ", inData=%p, mode=%04"PRIx16", ivIn=%p",
+              esysContext, keyHandle, inData, mode, ivIn);
     TSS2L_SYS_AUTH_COMMAND auths;
     RSRC_NODE_T *keyHandleNode;
 
@@ -184,7 +180,7 @@ Esys_VIRT_StoreState_Async(
     r = Tss2_Sys_VIRT_StoreState_Prepare(esysContext->sys,
                                          (keyHandleNode == NULL) ? TPM2_RH_NULL
                                           : keyHandleNode->rsrc.handle, inData,
-                                         decrypt, mode, ivIn);
+                                            mode, ivIn);
     return_state_if_error(r, _ESYS_STATE_INIT, "SAPI Prepare returned error.");
 
     /* Calculate the cpHash Values */

@@ -3903,7 +3903,6 @@ Esys_VIRT_StoreState(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn,
     TPM2B_MAX_BUFFER **outData,
@@ -3917,7 +3916,6 @@ Esys_VIRT_StoreState_Async(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn);
 
@@ -3937,7 +3935,6 @@ Esys_VIRT_RestoreState(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn,
     TPM2B_MAX_BUFFER **outData,
@@ -3951,7 +3948,6 @@ Esys_VIRT_RestoreState_Async(
     ESYS_TR shandle2,
     ESYS_TR shandle3,
     const TPM2B_MAX_BUFFER *inData,
-    TPMI_YES_NO decrypt,
     TPMI_ALG_CIPHER_MODE mode,
     const TPM2B_IV *ivIn);
 
