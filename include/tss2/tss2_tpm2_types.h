@@ -710,7 +710,7 @@ typedef uint32_t TPMA_ALGORITHM;
 /* Definition of UINT32 TPMA_OBJECT Bits */
 typedef uint32_t TPMA_OBJECT;
 
-#define TPMA_OBJECT_PTPMCREATED          ((TPMA_OBJECT) 0x00000001) /* shall be zero */
+#define TPMA_OBJECT_NODA                 ((TPMA_OBJECT) 0x00000001) /* shall be zero */
 #define TPMA_OBJECT_FIXEDTPM             ((TPMA_OBJECT) 0x00000002) /* SET 1 The hierarchy of the object as indicated by its Qualified Name may not change. CLEAR 0 The hierarchy of the object may change as a result of this object or an ancestor key being duplicated for use in another hierarchy. */
 #define TPMA_OBJECT_STCLEAR              ((TPMA_OBJECT) 0x00000004) /* SET 1 Previously saved contexts of this object may not be loaded after StartupCLEAR. CLEAR 0 Saved contexts of this object may be used after a ShutdownSTATE and subsequent Startup. */
 #define TPMA_OBJECT_RESERVED2_MASK       ((TPMA_OBJECT) 0x00000008) /* shall be zero */
@@ -719,7 +719,7 @@ typedef uint32_t TPMA_OBJECT;
 #define TPMA_OBJECT_USERWITHAUTH         ((TPMA_OBJECT) 0x00000040) /* SET 1 Approval of USER role actions with this object may be with an HMAC session or with a password using the authValue of the object or a policy session. CLEAR 0 Approval of USER role actions with this object may only be done with a policy session. */
 #define TPMA_OBJECT_ADMINWITHPOLICY      ((TPMA_OBJECT) 0x00000080) /* SET 1 Approval of ADMIN role actions with this object may only be done with a policy session. CLEAR 0 Approval of ADMIN role actions with this object may be with an HMAC session or with a password using the authValue of the object or a policy session. */
 #define TPMA_OBJECT_RESERVED3_MASK       ((TPMA_OBJECT) 0x00000300) /* shall be zero */
-#define TPMA_OBJECT_NODA                 ((TPMA_OBJECT) 0x00000400) /* SET 1 The object is not subject to dictionary attack protections. CLEAR 0 The object is subject to dictionary attack protections. */
+#define TPMA_OBJECT_PTPMCREATED          ((TPMA_OBJECT) 0x00000400) /* SET 1 The object is not subject to dictionary attack protections. CLEAR 0 The object is subject to dictionary attack protections. */
 #define TPMA_OBJECT_ENCRYPTEDDUPLICATION ((TPMA_OBJECT) 0x00000800) /* SET 1 If the object is duplicated then symmetricAlg shall not be TPM2_ALG_NULL and newParentHandle shall not be TPM2_RH_NULL. CLEAR 0 The object may be duplicated without an inner wrapper on the private portion of the object and the new parent may be TPM2_RH_NULL. */
 #define TPMA_OBJECT_RESERVED4_MASK       ((TPMA_OBJECT) 0x0000F000) /* shall be zero */
 #define TPMA_OBJECT_RESTRICTED           ((TPMA_OBJECT) 0x00010000) /* SET 1 Key usage is restricted to manipulate structures of known format the parent of this key shall have restricted SET. CLEAR 0 Key usage is not restricted to use on special formats. */
